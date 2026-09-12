@@ -1,0 +1,15 @@
+# Credenciais/config local (copiado de .env.example)
+.env
+
+# Estado persistido do Floci (S3, DynamoDB, etc.)
+data/*
+!data/.gitkeep
+
+# Terraform
+terraform/**/.terraform/
+terraform/**/.terraform.tfstate.lock.info
+*.tfstate
+*.tfstate.*
+terraform/environments/aws/terraform.tfvars
+
+.claude

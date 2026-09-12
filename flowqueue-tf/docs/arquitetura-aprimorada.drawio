@@ -1,0 +1,399 @@
+<mxfile host="65bd71144e">
+    <diagram id="improved-topology" name="01 · Arquitetura aprimorada">
+        <mxGraphModel dx="1420" dy="818" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1900" pageHeight="1300" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="title" value="&lt;b&gt;FlowQueue / Arquitetura aprimorada&lt;/b&gt;" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=none;strokeColor=none;spacing=12;align=left;fontSize=29;spacing=0;" parent="1" vertex="1">
+                    <mxGeometry x="35" y="20" width="1810" height="45" as="geometry"/>
+                </mxCell>
+                <mxCell id="subtitle" value="01 · Proposta baseada na arquitetura de referência · duas AZs · endpoints privados · segurança e operação" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=none;strokeColor=none;spacing=12;align=left;fontSize=15;fontColor=#607088;spacing=0;" parent="1" vertex="1">
+                    <mxGeometry x="35" y="73" width="1810" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="aws" value="AWS CLOUD" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FCFDFE;strokeColor=#7D8DA2;spacing=12;align=left;verticalAlign=top;fontStyle=1;" parent="1" vertex="1">
+                    <mxGeometry x="240" y="125" width="1620" height="1090" as="geometry"/>
+                </mxCell>
+                <mxCell id="users" value="&lt;b&gt;Usuários&lt;/b&gt;&lt;br&gt;Aplicação / API autenticada" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FFFFFF;strokeColor=#CAD4E0;spacing=12;rounded=1;arcSize=8;align=left;" parent="1" vertex="1">
+                    <mxGeometry x="35" y="175" width="180" height="85" as="geometry"/>
+                </mxCell>
+                <mxCell id="cloudfront" value="&lt;b&gt;CloudFront&lt;/b&gt;&lt;br&gt;HTTPS · cache de estáticos&lt;br&gt;API autenticada sem cache" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FFFFFF;strokeColor=#CAD4E0;spacing=12;rounded=1;arcSize=8;align=left;spacingLeft=60;" parent="1" vertex="1">
+                    <mxGeometry x="280" y="175" width="300" height="85" as="geometry"/>
+                </mxCell>
+                <mxCell id="cloudfront-icon" value="" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#8C4FFF;strokeColor=none;spacing=12;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.cloudfront;gradientColor=none;aspect=fixed;" parent="cloudfront" vertex="1">
+                    <mxGeometry x="12" y="24.5" width="36" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="waf" value="&lt;b&gt;AWS WAF&lt;/b&gt;&lt;br&gt;Web ACL no CloudFront&lt;br&gt;Regras web + rate limiting" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FFFFFF;strokeColor=#CAD4E0;spacing=12;rounded=1;arcSize=8;align=left;spacingLeft=60;" parent="1" vertex="1">
+                    <mxGeometry x="665" y="175" width="270" height="85" as="geometry"/>
+                </mxCell>
+                <mxCell id="waf-icon" value="" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#DD344C;strokeColor=none;spacing=12;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.waf;gradientColor=none;aspect=fixed;" parent="waf" vertex="1">
+                    <mxGeometry x="12" y="24.5" width="36" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="tls" value="&lt;b&gt;ACM / TLS&lt;/b&gt;&lt;br&gt;Certificado CloudFront: us-east-1&lt;br&gt;Certificado ALB: região da aplicação" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FFFFFF;strokeColor=#CAD4E0;spacing=12;rounded=1;arcSize=8;align=left;spacingLeft=60;" parent="1" vertex="1">
+                    <mxGeometry x="1020" y="175" width="370" height="85" as="geometry"/>
+                </mxCell>
+                <mxCell id="tls-icon" value="" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#DD344C;strokeColor=none;spacing=12;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.certificate_manager;gradientColor=none;aspect=fixed;" parent="tls" vertex="1">
+                    <mxGeometry x="12" y="24.5" width="36" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="origin-note" value="&lt;b&gt;Origem protegida&lt;/b&gt;&lt;br&gt;ALB aceita origem CloudFront:&lt;br&gt;prefix list + cabeçalho validado.&lt;br&gt;HTTPS até o ALB." style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=none;strokeColor=none;spacing=12;align=left;" parent="1" vertex="1">
+                    <mxGeometry x="1430" y="170" width="385" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="region" value="REGIÃO AWS" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FFFFFF;strokeColor=#6DA4B9;spacing=12;align=left;verticalAlign=top;fontStyle=1;dashed=1;" parent="1" vertex="1">
+                    <mxGeometry x="265" y="295" width="1570" height="900" as="geometry"/>
+                </mxCell>
+                <mxCell id="vpc" value="VPC · COMPUTAÇÃO PRIVADA / 6 SUB-REDES" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FBFDF9;strokeColor=#70A05B;spacing=12;align=left;verticalAlign=top;fontStyle=1;" parent="1" vertex="1">
+                    <mxGeometry x="285" y="340" width="950" height="825" as="geometry"/>
+                </mxCell>
+                <mxCell id="managed" value="SERVIÇOS REGIONAIS · FORA DA VPC" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FAF9FC;strokeColor=#AB99C1;spacing=12;align=left;verticalAlign=top;fontStyle=1;" parent="1" vertex="1">
+                    <mxGeometry x="1260" y="340" width="550" height="825" as="geometry"/>
+                </mxCell>
+                <mxCell id="igw" value="&lt;b&gt;Internet Gateway&lt;/b&gt;&lt;br&gt;Entrada ALB / saída dos NATs" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FFFFFF;strokeColor=#CAD4E0;spacing=12;rounded=1;arcSize=8;align=left;spacingLeft=60;" parent="1" vertex="1">
+                    <mxGeometry x="310" y="385" width="265" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="igw-icon" value="" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#8C4FFF;strokeColor=none;spacing=12;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.internet_gateway;gradientColor=none;aspect=fixed;" parent="igw" vertex="1">
+                    <mxGeometry x="12" y="17" width="36" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="asg-note" value="&lt;b&gt;Dois Auto Scaling Groups&lt;/b&gt;&lt;br&gt;Frontend: membros nas AZs A e B&lt;br&gt;Backend: membros nas AZs A e B" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FFF5E7;strokeColor=#DFC298;spacing=12;align=left;" parent="1" vertex="1">
+                    <mxGeometry x="620" y="385" width="580" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="azA" value="ZONA DE DISPONIBILIDADE A" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#F6FAFD;strokeColor=#80A5C0;spacing=12;align=left;verticalAlign=top;fontStyle=1;dashed=1;" parent="1" vertex="1">
+                    <mxGeometry x="305" y="475" width="910" height="225" as="geometry"/>
+                </mxCell>
+                <mxCell id="pubA" value="Sub-rede pública 1" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#EAF4E3;strokeColor=#BDD2AE;spacing=12;align=left;verticalAlign=top;fontStyle=1;" parent="1" vertex="1">
+                    <mxGeometry x="320" y="515" width="255" height="170" as="geometry"/>
+                </mxCell>
+                <mxCell id="frontsubA" value="Privada 1 / Frontend" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#E7F1F9;strokeColor=#BED1E0;spacing=12;align=left;verticalAlign=top;fontStyle=1;" parent="1" vertex="1">
+                    <mxGeometry x="625" y="515" width="265" height="170" as="geometry"/>
+                </mxCell>
+                <mxCell id="backsubA" value="Privada 3 / Backend" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#E7F1F9;strokeColor=#BED1E0;spacing=12;align=left;verticalAlign=top;fontStyle=1;" parent="1" vertex="1">
+                    <mxGeometry x="945" y="515" width="255" height="170" as="geometry"/>
+                </mxCell>
+                <mxCell id="albA" value="&lt;b&gt;ALB / presença A&lt;/b&gt;&lt;br&gt;Um ALB nas duas AZs" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FFFFFF;strokeColor=#CAD4E0;spacing=12;rounded=1;arcSize=8;align=left;" parent="1" vertex="1">
+                    <mxGeometry x="335" y="545" width="225" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="natA" value="&lt;b&gt;NAT Gateway A&lt;/b&gt;&lt;br&gt;Integrações externas" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FFFFFF;strokeColor=#CAD4E0;spacing=12;rounded=1;arcSize=8;align=left;" parent="1" vertex="1">
+                    <mxGeometry x="335" y="615" width="225" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="fA" value="&lt;b&gt;EC2 Frontend A&lt;/b&gt;&lt;br&gt;API de tarefas / status&lt;br&gt;Autoriza acesso ao recibo" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FFFFFF;strokeColor=#CAD4E0;spacing=12;rounded=1;arcSize=8;align=left;spacingLeft=60;" parent="1" vertex="1">
+                    <mxGeometry x="640" y="560" width="235" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="fA-icon" value="" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#ED7100;strokeColor=none;spacing=12;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.ec2;gradientColor=none;aspect=fixed;" parent="fA" vertex="1">
+                    <mxGeometry x="12" y="32" width="36" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="bA" value="&lt;b&gt;EC2 Backend A&lt;/b&gt;&lt;br&gt;Worker idempotente&lt;br&gt;Processa e anexa recibo" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FFFFFF;strokeColor=#CAD4E0;spacing=12;rounded=1;arcSize=8;align=left;spacingLeft=60;" parent="1" vertex="1">
+                    <mxGeometry x="960" y="560" width="225" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="bA-icon" value="" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#ED7100;strokeColor=none;spacing=12;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.ec2;gradientColor=none;aspect=fixed;" parent="bA" vertex="1">
+                    <mxGeometry x="12" y="32" width="36" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="azB" value="ZONA DE DISPONIBILIDADE B" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#F6FAFD;strokeColor=#80A5C0;spacing=12;align=left;verticalAlign=top;fontStyle=1;dashed=1;" parent="1" vertex="1">
+                    <mxGeometry x="305" y="720" width="910" height="225" as="geometry"/>
+                </mxCell>
+                <mxCell id="pubB" value="Sub-rede pública 2" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#EAF4E3;strokeColor=#BDD2AE;spacing=12;align=left;verticalAlign=top;fontStyle=1;" parent="1" vertex="1">
+                    <mxGeometry x="320" y="760" width="255" height="170" as="geometry"/>
+                </mxCell>
+                <mxCell id="frontsubB" value="Privada 2 / Frontend" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#E7F1F9;strokeColor=#BED1E0;spacing=12;align=left;verticalAlign=top;fontStyle=1;" parent="1" vertex="1">
+                    <mxGeometry x="625" y="760" width="265" height="170" as="geometry"/>
+                </mxCell>
+                <mxCell id="backsubB" value="Privada 4 / Backend" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#E7F1F9;strokeColor=#BED1E0;spacing=12;align=left;verticalAlign=top;fontStyle=1;" parent="1" vertex="1">
+                    <mxGeometry x="945" y="760" width="255" height="170" as="geometry"/>
+                </mxCell>
+                <mxCell id="albB" value="&lt;b&gt;ALB / presença B&lt;/b&gt;&lt;br&gt;Um ALB nas duas AZs" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FFFFFF;strokeColor=#CAD4E0;spacing=12;rounded=1;arcSize=8;align=left;" parent="1" vertex="1">
+                    <mxGeometry x="335" y="790" width="225" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="natB" value="&lt;b&gt;NAT Gateway B&lt;/b&gt;&lt;br&gt;Integrações externas" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FFFFFF;strokeColor=#CAD4E0;spacing=12;rounded=1;arcSize=8;align=left;" parent="1" vertex="1">
+                    <mxGeometry x="335" y="860" width="225" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="fB" value="&lt;b&gt;EC2 Frontend B&lt;/b&gt;&lt;br&gt;API de tarefas / status&lt;br&gt;Autoriza acesso ao recibo" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FFFFFF;strokeColor=#CAD4E0;spacing=12;rounded=1;arcSize=8;align=left;spacingLeft=60;" parent="1" vertex="1">
+                    <mxGeometry x="640" y="805" width="235" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="fB-icon" value="" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#ED7100;strokeColor=none;spacing=12;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.ec2;gradientColor=none;aspect=fixed;" parent="fB" vertex="1">
+                    <mxGeometry x="12" y="32" width="36" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="bB" value="&lt;b&gt;EC2 Backend B&lt;/b&gt;&lt;br&gt;Worker idempotente&lt;br&gt;Processa e anexa recibo" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FFFFFF;strokeColor=#CAD4E0;spacing=12;rounded=1;arcSize=8;align=left;spacingLeft=60;" parent="1" vertex="1">
+                    <mxGeometry x="960" y="805" width="225" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="bB-icon" value="" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#ED7100;strokeColor=none;spacing=12;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.ec2;gradientColor=none;aspect=fixed;" parent="bB" vertex="1">
+                    <mxGeometry x="12" y="32" width="36" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="dlq" value="&lt;b&gt;SQS / DLQ&lt;/b&gt;&lt;br&gt;Alarme de mensagens &gt; 0&lt;br&gt;Investigação e redrive controlado" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FFFFFF;strokeColor=#CAD4E0;spacing=12;rounded=1;arcSize=8;align=left;spacingLeft=60;" parent="1" vertex="1">
+                    <mxGeometry x="1290" y="385" width="490" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="dlq-icon" value="" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#D62484;strokeColor=none;spacing=12;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.sqs;gradientColor=none;aspect=fixed;" parent="dlq" vertex="1">
+                    <mxGeometry x="12" y="22" width="36" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="sqs" value="&lt;b&gt;SQS / fila principal&lt;/b&gt;&lt;br&gt;Frontend publica · backend consulta e exclui&lt;br&gt;Long polling · visibilidade ajustada à tarefa" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FFFFFF;strokeColor=#CAD4E0;spacing=12;rounded=1;arcSize=8;align=left;spacingLeft=60;" parent="1" vertex="1">
+                    <mxGeometry x="1290" y="515" width="490" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="sqs-icon" value="" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#D62484;strokeColor=none;spacing=12;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.sqs;gradientColor=none;aspect=fixed;" parent="sqs" vertex="1">
+                    <mxGeometry x="12" y="27" width="36" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="ddb" value="&lt;b&gt;DynamoDB&lt;/b&gt;&lt;br&gt;Estado da tarefa / idempotência / proprietário&lt;br&gt;Chave S3 + VersionId · PITR e restauração testada" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FFFFFF;strokeColor=#CAD4E0;spacing=12;rounded=1;arcSize=8;align=left;spacingLeft=60;" parent="1" vertex="1">
+                    <mxGeometry x="1290" y="655" width="490" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="ddb-icon" value="" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#3B48CC;strokeColor=none;spacing=12;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.dynamodb;gradientColor=none;aspect=fixed;" parent="ddb" vertex="1">
+                    <mxGeometry x="12" y="27" width="36" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="s3" value="&lt;b&gt;S3 / flowqueue-receipts-*&lt;/b&gt;&lt;br&gt;Recibos · COMPLIANCE 365 dias · versionado&lt;br&gt;Block Public Access · SSE-S3 · política de retenção" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FFFFFF;strokeColor=#CAD4E0;spacing=12;rounded=1;arcSize=8;align=left;spacingLeft=60;" parent="1" vertex="1">
+                    <mxGeometry x="1290" y="790" width="490" height="95" as="geometry"/>
+                </mxCell>
+                <mxCell id="s3-icon" value="" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#7AA116;strokeColor=none;spacing=12;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.s3;gradientColor=none;aspect=fixed;" parent="s3" vertex="1">
+                    <mxGeometry x="12" y="29.5" width="36" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="ssm" value="&lt;b&gt;Systems Manager&lt;/b&gt;&lt;br&gt;Session Manager sem SSH/RDP&lt;br&gt;Parameter Store · roles IAM por camada" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FFFFFF;strokeColor=#CAD4E0;spacing=12;rounded=1;arcSize=8;align=left;spacingLeft=60;" parent="1" vertex="1">
+                    <mxGeometry x="1290" y="930" width="490" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="ssm-icon" value="" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#D62484;strokeColor=none;spacing=12;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.systems_manager;gradientColor=none;aspect=fixed;" parent="ssm" vertex="1">
+                    <mxGeometry x="12" y="22" width="36" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="cw" value="&lt;b&gt;CloudWatch&lt;/b&gt;&lt;br&gt;Logs correlacionados por tarefa · alarmes&lt;br&gt;Escala frontend por tráfego; backend por backlog/worker" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FFFFFF;strokeColor=#CAD4E0;spacing=12;rounded=1;arcSize=8;align=left;spacingLeft=60;" parent="1" vertex="1">
+                    <mxGeometry x="1290" y="1060" width="490" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="cw-icon" value="" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#D62484;strokeColor=none;spacing=12;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.cloudwatch;gradientColor=none;aspect=fixed;" parent="cw" vertex="1">
+                    <mxGeometry x="12" y="22" width="36" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="ep" value="VPC ENDPOINTS" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#EFF7F6;strokeColor=#86B6AD;spacing=12;align=left;verticalAlign=top;fontStyle=1;" parent="1" vertex="1">
+                    <mxGeometry x="320" y="980" width="880" height="95" as="geometry"/>
+                </mxCell>
+                <mxCell id="eptext" value="&lt;b&gt;Gateway:&lt;/b&gt; S3 e DynamoDB → rotas das sub-redes privadas&lt;br&gt;&lt;b&gt;Interface:&lt;/b&gt; SQS e serviços necessários ao SSM → presença A/B, DNS privado e SG HTTPS&lt;br&gt;Aplicações usam HTTPS; políticas de endpoint + IAM limitam recursos e ações." style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=none;strokeColor=none;spacing=12;align=left;fontSize=13;spacing=0;" parent="1" vertex="1">
+                    <mxGeometry x="335" y="1014" width="850" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="routes" value="&lt;b&gt;Rotas e saúde:&lt;/b&gt; públicas → IGW; privadas → NAT da própria AZ para saída externa.&lt;br&gt;Frontend recebe apenas do SG do ALB; backend sem entrada de aplicação.&lt;br&gt;ALB verifica saúde da aplicação; ASG Frontend usa saúde ELB. Testar perda de AZ e capacidade restante." style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=none;strokeColor=none;spacing=12;align=left;fontSize=13;spacing=0;" parent="1" vertex="1">
+                    <mxGeometry x="320" y="1090" width="880" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="users-cf" value="HTTPS" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=12;strokeColor=#6F4ABA;fontColor=#6F4ABA;strokeWidth=1.6;endArrow=block;endSize=7;labelBackgroundColor=#FFFFFF;whiteSpace=nowrap;" parent="1" source="users" target="cloudfront" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="waf-cf" value="Web ACL" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=12;strokeColor=#6F4ABA;fontColor=#6F4ABA;strokeWidth=1.6;endArrow=block;endSize=7;labelBackgroundColor=#FFFFFF;dashed=1;endArrow=none;whiteSpace=nowrap;" parent="1" source="waf" target="cloudfront" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="cf-igw" value="HTTPS" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=12;strokeColor=#6F4ABA;fontColor=#6F4ABA;strokeWidth=1.6;endArrow=block;endSize=7;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=1;entryX=0.5;entryY=0;whiteSpace=nowrap;" parent="1" source="cloudfront" target="igw" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="igw-a" value="" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=12;strokeColor=#6F4ABA;fontColor=#6F4ABA;strokeWidth=1.6;endArrow=block;endSize=7;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=1;entryX=0.5;entryY=0;whiteSpace=nowrap;" parent="1" source="igw" target="albA" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="igw-b" value="" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=12;strokeColor=#6F4ABA;fontColor=#6F4ABA;strokeWidth=1.6;endArrow=block;endSize=7;labelBackgroundColor=#FFFFFF;exitX=0;exitY=0.5;entryX=0;entryY=0.5;whiteSpace=nowrap;" parent="1" source="igw" target="albB" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="295" y="420"/>
+                            <mxPoint x="295" y="817"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="alb-fA" value="HTTP interno" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=12;strokeColor=#6F4ABA;fontColor=#6F4ABA;strokeWidth=1.6;endArrow=block;endSize=7;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;entryX=0;entryY=0.3;whiteSpace=nowrap;" parent="1" source="albA" target="fA" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="alb-fB" value="HTTP interno" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=12;strokeColor=#6F4ABA;fontColor=#6F4ABA;strokeWidth=1.6;endArrow=block;endSize=7;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;entryX=0;entryY=0.3;whiteSpace=nowrap;" parent="1" source="albB" target="fB" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="sqs-dlq" value="Falhas repetidas" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=12;strokeColor=#C02976;fontColor=#C02976;strokeWidth=1.6;endArrow=block;endSize=7;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=0;entryX=0.5;entryY=1;whiteSpace=nowrap;" parent="1" source="sqs" target="dlq" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="legend" value="&lt;b&gt;Leitura:&lt;/b&gt; linhas da aba 01 mostram entrada web e redrive. Chamadas EC2 → endpoints → serviços e fluxos de negócio estão detalhados nas abas 02 e 03.&lt;br&gt;Os dois ASGs e o ALB abrangem ambas as AZs. As políticas de escala e os alarmes estão associados aos recursos; não representam tráfego da aplicação." style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=none;strokeColor=none;spacing=12;align=left;fontSize=12;spacing=0;" parent="1" vertex="1">
+                    <mxGeometry x="35" y="1220" width="1810" height="45" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+    <diagram id="improved-processing" name="02 · Processamento e recibos">
+        <mxGraphModel dx="1420" dy="818" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1900" pageHeight="1150" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="title" value="&lt;b&gt;FlowQueue / Processamento confiável&lt;/b&gt;" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=none;strokeColor=none;spacing=12;align=left;fontSize=29;spacing=0;" parent="1" vertex="1">
+                    <mxGeometry x="35" y="20" width="1810" height="45" as="geometry"/>
+                </mxCell>
+                <mxCell id="subtitle" value="02 · Chamadas iniciadas pela aplicação · tratamento de duplicatas e falhas parciais entre SQS, DynamoDB e S3" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=none;strokeColor=none;spacing=12;align=left;fontSize=15;fontColor=#607088;spacing=0;" parent="1" vertex="1">
+                    <mxGeometry x="35" y="73" width="1810" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="flow" value="CICLO DA TAREFA" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#F9FBFE;strokeColor=#BCCBDD;spacing=12;align=left;verticalAlign=top;fontStyle=1;" parent="1" vertex="1">
+                    <mxGeometry x="35" y="135" width="1820" height="365" as="geometry"/>
+                </mxCell>
+                <mxCell id="front" value="&lt;b&gt;1 · Frontend&lt;/b&gt;&lt;br&gt;Valida a solicitação&lt;br&gt;Gera taskId / proprietário" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FFFFFF;strokeColor=#CAD4E0;spacing=12;rounded=1;arcSize=8;align=left;spacingLeft=60;" parent="1" vertex="1">
+                    <mxGeometry x="65" y="205" width="240" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="front-icon" value="" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#ED7100;strokeColor=none;spacing=12;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.ec2;gradientColor=none;aspect=fixed;" parent="front" vertex="1">
+                    <mxGeometry x="12" y="32" width="36" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="queue" value="&lt;b&gt;2 · SQS&lt;/b&gt;&lt;br&gt;Recebe a tarefa&lt;br&gt;Inclui taskId e proprietário" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FFFFFF;strokeColor=#CAD4E0;spacing=12;rounded=1;arcSize=8;align=left;spacingLeft=60;" parent="1" vertex="1">
+                    <mxGeometry x="365" y="205" width="250" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="queue-icon" value="" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#D62484;strokeColor=none;spacing=12;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.sqs;gradientColor=none;aspect=fixed;" parent="queue" vertex="1">
+                    <mxGeometry x="12" y="32" width="36" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="worker" value="&lt;b&gt;3 · Backend&lt;/b&gt;&lt;br&gt;ReceiveMessage / long polling&lt;br&gt;Adquire tarefa para processar" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FFFFFF;strokeColor=#CAD4E0;spacing=12;rounded=1;arcSize=8;align=left;spacingLeft=60;" parent="1" vertex="1">
+                    <mxGeometry x="695" y="205" width="320" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="worker-icon" value="" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#ED7100;strokeColor=none;spacing=12;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.ec2;gradientColor=none;aspect=fixed;" parent="worker" vertex="1">
+                    <mxGeometry x="12" y="32" width="36" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="state" value="&lt;b&gt;4 · DynamoDB&lt;/b&gt;&lt;br&gt;Escrita condicional por taskId&lt;br&gt;PROCESSING + lease / proprietário" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FFFFFF;strokeColor=#CAD4E0;spacing=12;rounded=1;arcSize=8;align=left;spacingLeft=60;" parent="1" vertex="1">
+                    <mxGeometry x="1090" y="205" width="325" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="state-icon" value="" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#3B48CC;strokeColor=none;spacing=12;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.dynamodb;gradientColor=none;aspect=fixed;" parent="state" vertex="1">
+                    <mxGeometry x="12" y="32" width="36" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="bucket" value="&lt;b&gt;5 · S3&lt;/b&gt;&lt;br&gt;Grava recibo com chave estável&lt;br&gt;COMPLIANCE / 365 dias" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FFFFFF;strokeColor=#CAD4E0;spacing=12;rounded=1;arcSize=8;align=left;spacingLeft=60;" parent="1" vertex="1">
+                    <mxGeometry x="1490" y="205" width="330" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="bucket-icon" value="" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#7AA116;strokeColor=none;spacing=12;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.s3;gradientColor=none;aspect=fixed;" parent="bucket" vertex="1">
+                    <mxGeometry x="12" y="32" width="36" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="publish" value="SendMessage" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=12;strokeColor=#C02976;fontColor=#C02976;strokeWidth=1.6;endArrow=block;endSize=7;labelBackgroundColor=#FFFFFF;whiteSpace=nowrap;" parent="1" source="front" target="queue" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="receive" value="ReceiveMessage" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=12;strokeColor=#C02976;fontColor=#C02976;strokeWidth=1.6;endArrow=block;endSize=7;labelBackgroundColor=#FFFFFF;whiteSpace=nowrap;" parent="1" source="worker" target="queue" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="claim" value="Adquire / verifica" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=12;strokeColor=#3569B0;fontColor=#3569B0;strokeWidth=1.6;endArrow=block;endSize=7;labelBackgroundColor=#FFFFFF;whiteSpace=nowrap;" parent="1" source="worker" target="state" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="upload" value="PutObject · HTTPS" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=12;strokeColor=#648B20;fontColor=#648B20;strokeWidth=1.6;endArrow=block;endSize=7;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=0;entryX=0.5;entryY=0;whiteSpace=nowrap;" parent="1" source="worker" target="bucket" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="855" y="165"/>
+                            <mxPoint x="1655" y="165"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="commit" value="&lt;b&gt;6 · Confirma resultado&lt;/b&gt;&lt;br&gt;DynamoDB: COMPLETED&lt;br&gt;Persiste chave, VersionId e checksum" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FFFFFF;strokeColor=#CAD4E0;spacing=12;rounded=1;arcSize=8;align=left;spacingLeft=60;" parent="1" vertex="1">
+                    <mxGeometry x="1090" y="365" width="325" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="commit-icon" value="" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#3B48CC;strokeColor=none;spacing=12;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.dynamodb;gradientColor=none;aspect=fixed;" parent="commit" vertex="1">
+                    <mxGeometry x="12" y="32" width="36" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="delete" value="&lt;b&gt;7 · Remove mensagem&lt;/b&gt;&lt;br&gt;DeleteMessage somente após&lt;br&gt;recibo e estado confirmados" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FFFFFF;strokeColor=#CAD4E0;spacing=12;rounded=1;arcSize=8;align=left;spacingLeft=60;" parent="1" vertex="1">
+                    <mxGeometry x="695" y="365" width="320" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="delete-icon" value="" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#D62484;strokeColor=none;spacing=12;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.sqs;gradientColor=none;aspect=fixed;" parent="delete" vertex="1">
+                    <mxGeometry x="12" y="32" width="36" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="receipt-commit" value="Após gravação confirmada" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=12;strokeColor=#648B20;fontColor=#648B20;strokeWidth=1.6;endArrow=block;endSize=7;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=1;entryX=1;entryY=0.5;whiteSpace=nowrap;" parent="1" source="bucket" target="commit" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1655" y="415"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="commit-delete" value="Sucesso" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=12;strokeColor=#3569B0;fontColor=#3569B0;strokeWidth=1.6;endArrow=block;endSize=7;labelBackgroundColor=#FFFFFF;whiteSpace=nowrap;" parent="1" source="commit" target="delete" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="accepted" value="Frontend responde &lt;b&gt;202 + taskId&lt;/b&gt; somente após&lt;br&gt;confirmação do SendMessage. A conclusão é assíncrona.&lt;br&gt;O ciclo 4–7 é executado pelo mesmo worker." style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=none;strokeColor=none;spacing=12;align=left;" parent="1" vertex="1">
+                    <mxGeometry x="65" y="355" width="545" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="retry" value="DUPLICATAS E FALHAS PARCIAIS" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FFF9F0;strokeColor=#D5BB8D;spacing=12;align=left;verticalAlign=top;fontStyle=1;" parent="1" vertex="1">
+                    <mxGeometry x="35" y="535" width="880" height="290" as="geometry"/>
+                </mxCell>
+                <mxCell id="retrytext" value="&lt;b&gt;Mensagem repetida:&lt;/b&gt; se COMPLETED, não repetir efeitos; confirmar existência do resultado e remover a mensagem.&lt;br&gt;&lt;br&gt;&lt;b&gt;S3 gravou, banco falhou:&lt;/b&gt; no retry, reconciliar o objeto existente por taskId, validar conteúdo e recuperar VersionId antes de concluir o estado.&lt;br&gt;&lt;br&gt;&lt;b&gt;Concorrência:&lt;/b&gt; lease com expiração no DynamoDB + criação condicional do objeto (If-None-Match: *); tratar conflitos e não criar novas versões em cada retry.&lt;br&gt;&lt;br&gt;&lt;b&gt;Worker caiu:&lt;/b&gt; permitir recuperação após expiração do lease. Não excluir da fila antes do estado final." style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=none;strokeColor=none;spacing=12;align=left;verticalAlign=top;fontSize=14;spacing=0;" parent="1" vertex="1">
+                    <mxGeometry x="60" y="580" width="830" height="225" as="geometry"/>
+                </mxCell>
+                <mxCell id="queueops" value="FILA, ESCALA E OPERAÇÃO" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FDF6FA;strokeColor=#D8B4C7;spacing=12;align=left;verticalAlign=top;fontStyle=1;" parent="1" vertex="1">
+                    <mxGeometry x="945" y="535" width="910" height="290" as="geometry"/>
+                </mxCell>
+                <mxCell id="queueops-text" value="&lt;b&gt;Visibilidade:&lt;/b&gt; maior que o tempo normal de processamento; estender com ChangeMessageVisibility quando necessário, com IAM correspondente.&lt;br&gt;&lt;br&gt;&lt;b&gt;Retry:&lt;/b&gt; backoff; após maxReceiveCount → DLQ. Investigar causa e corrigir antes de redrive. Reprocessamento preserva taskId e idempotência.&lt;br&gt;&lt;br&gt;&lt;b&gt;Escala:&lt;/b&gt; backlog por worker; alvo calculado a partir do tempo de processamento e da espera aceitável. Drenar trabalhos antes de encerrar instâncias.&lt;br&gt;&lt;br&gt;&lt;b&gt;Alarmes:&lt;/b&gt; idade da mensagem mais antiga, DLQ &gt; 0, erros de worker/S3/DynamoDB; logs com taskId. Retenção da DLQ maior que a principal." style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=none;strokeColor=none;spacing=12;align=left;verticalAlign=top;fontSize=14;spacing=0;" parent="1" vertex="1">
+                    <mxGeometry x="970" y="580" width="860" height="225" as="geometry"/>
+                </mxCell>
+                <mxCell id="lock" value="POLÍTICA DOS RECIBOS" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#F5F9EF;strokeColor=#B5C991;spacing=12;align=left;verticalAlign=top;fontStyle=1;" parent="1" vertex="1">
+                    <mxGeometry x="35" y="860" width="1820" height="205" as="geometry"/>
+                </mxCell>
+                <mxCell id="lock1" value="&lt;b&gt;Bucket privado e versionado&lt;/b&gt;&lt;br&gt;&lt;br&gt;flowqueue-receipts-*&lt;br&gt;Object Lock: COMPLIANCE&lt;br&gt;Retenção padrão: 365 dias&lt;br&gt;Block Public Access · SSE-S3" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=none;strokeColor=none;spacing=12;align=left;verticalAlign=top;spacing=0;" parent="1" vertex="1">
+                    <mxGeometry x="60" y="910" width="490" height="135" as="geometry"/>
+                </mxCell>
+                <mxCell id="lock2" value="&lt;b&gt;Garantia de retenção&lt;/b&gt;&lt;br&gt;&lt;br&gt;Políticas exigem COMPLIANCE e impedem&lt;br&gt;retenção explícita menor que 365 dias.&lt;br&gt;Role do worker sem alteração de configuração&lt;br&gt;do bucket nem exclusão de versões." style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=none;strokeColor=none;spacing=12;align=left;verticalAlign=top;spacing=0;" parent="1" vertex="1">
+                    <mxGeometry x="650" y="910" width="525" height="135" as="geometry"/>
+                </mxCell>
+                <mxCell id="lock3" value="&lt;b&gt;Proteção aplicada à versão&lt;/b&gt;&lt;br&gt;&lt;br&gt;Versões protegidas não são apagadas nem&lt;br&gt;sobrescritas durante a retenção, inclusive por root.&lt;br&gt;Novas versões e delete markers não equivalem&lt;br&gt;à exclusão da versão retida. Registrar VersionId." style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=none;strokeColor=none;spacing=12;align=left;verticalAlign=top;spacing=0;" parent="1" vertex="1">
+                    <mxGeometry x="1240" y="910" width="575" height="135" as="geometry"/>
+                </mxCell>
+                <mxCell id="foot" value="Proposta de comportamento da aplicação: não há transação única envolvendo S3 + DynamoDB + SQS. Idempotência, controle de concorrência e reconciliação devem ser implementados e testados." style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=none;strokeColor=none;spacing=12;align=left;fontSize=12;spacing=0;" parent="1" vertex="1">
+                    <mxGeometry x="35" y="1090" width="1810" height="35" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+    <diagram id="improved-access" name="03 · Acesso e controles">
+        <mxGraphModel dx="1420" dy="818" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1900" pageHeight="1150" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="title" value="&lt;b&gt;FlowQueue / Status, download e controles&lt;/b&gt;" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=none;strokeColor=none;spacing=12;align=left;fontSize=29;spacing=0;" parent="1" vertex="1">
+                    <mxGeometry x="35" y="20" width="1810" height="45" as="geometry"/>
+                </mxCell>
+                <mxCell id="subtitle" value="03 · Autorização por proprietário · URL pré-assinada de curta duração · caminhos privados e recuperação" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=none;strokeColor=none;spacing=12;align=left;fontSize=15;fontColor=#607088;spacing=0;" parent="1" vertex="1">
+                    <mxGeometry x="35" y="73" width="1810" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="access" value="ACOMPANHAMENTO E DOWNLOAD DO RECIBO" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#F9FBFE;strokeColor=#BCCBDD;spacing=12;align=left;verticalAlign=top;fontStyle=1;" parent="1" vertex="1">
+                    <mxGeometry x="35" y="135" width="1820" height="330" as="geometry"/>
+                </mxCell>
+                <mxCell id="user" value="&lt;b&gt;Usuário autenticado&lt;/b&gt;&lt;br&gt;GET /tasks/{taskId}&lt;br&gt;GET /tasks/{taskId}/receipt" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FFFFFF;strokeColor=#CAD4E0;spacing=12;rounded=1;arcSize=8;align=left;" parent="1" vertex="1">
+                    <mxGeometry x="65" y="210" width="275" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge" value="&lt;b&gt;CloudFront + WAF + ALB&lt;/b&gt;&lt;br&gt;HTTPS · encaminha autenticação&lt;br&gt;Sem cache de respostas privadas" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FFFFFF;strokeColor=#CAD4E0;spacing=12;rounded=1;arcSize=8;align=left;spacingLeft=60;" parent="1" vertex="1">
+                    <mxGeometry x="410" y="210" width="335" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge-icon" value="" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#8C4FFF;strokeColor=none;spacing=12;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.cloudfront;gradientColor=none;aspect=fixed;" parent="edge" vertex="1">
+                    <mxGeometry x="12" y="32" width="36" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="api" value="&lt;b&gt;Frontend / API&lt;/b&gt;&lt;br&gt;Valida identidade e autorização&lt;br&gt;Confere proprietário da tarefa" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FFFFFF;strokeColor=#CAD4E0;spacing=12;rounded=1;arcSize=8;align=left;spacingLeft=60;" parent="1" vertex="1">
+                    <mxGeometry x="820" y="210" width="345" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="api-icon" value="" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#ED7100;strokeColor=none;spacing=12;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.ec2;gradientColor=none;aspect=fixed;" parent="api" vertex="1">
+                    <mxGeometry x="12" y="32" width="36" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="db" value="&lt;b&gt;DynamoDB&lt;/b&gt;&lt;br&gt;Estado + proprietário&lt;br&gt;Chave S3 e VersionId" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FFFFFF;strokeColor=#CAD4E0;spacing=12;rounded=1;arcSize=8;align=left;spacingLeft=60;" parent="1" vertex="1">
+                    <mxGeometry x="1250" y="210" width="265" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="db-icon" value="" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#3B48CC;strokeColor=none;spacing=12;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.dynamodb;gradientColor=none;aspect=fixed;" parent="db" vertex="1">
+                    <mxGeometry x="12" y="32" width="36" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="s3" value="&lt;b&gt;S3 privado&lt;/b&gt;&lt;br&gt;Download da versão&lt;br&gt;por HTTPS" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FFFFFF;strokeColor=#CAD4E0;spacing=12;rounded=1;arcSize=8;align=left;spacingLeft=60;" parent="1" vertex="1">
+                    <mxGeometry x="1580" y="210" width="240" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="s3-icon" value="" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#7AA116;strokeColor=none;spacing=12;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.s3;gradientColor=none;aspect=fixed;" parent="s3" vertex="1">
+                    <mxGeometry x="12" y="32" width="36" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="user-edge" value="" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=12;strokeColor=#6F4ABA;fontColor=#6F4ABA;strokeWidth=1.6;endArrow=block;endSize=7;labelBackgroundColor=#FFFFFF;whiteSpace=nowrap;" parent="1" source="user" target="edge" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge-api" value="" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=12;strokeColor=#6F4ABA;fontColor=#6F4ABA;strokeWidth=1.6;endArrow=block;endSize=7;labelBackgroundColor=#FFFFFF;whiteSpace=nowrap;" parent="1" source="edge" target="api" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="api-db" value="GetItem" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=12;strokeColor=#3569B0;fontColor=#3569B0;strokeWidth=1.6;endArrow=block;endSize=7;labelBackgroundColor=#FFFFFF;whiteSpace=nowrap;" parent="1" source="api" target="db" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="download" value="Download por URL pré-assinada · após autorização" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=12;strokeColor=#648B20;fontColor=#648B20;strokeWidth=1.6;endArrow=block;endSize=7;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=0;entryX=0.5;entryY=0;whiteSpace=nowrap;" parent="1" source="user" target="s3" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="202" y="175"/>
+                            <mxPoint x="1700" y="175"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="response" value="&lt;b&gt;Resposta:&lt;/b&gt; API devolve status; se COMPLETED e autorizado, assina URL com VersionId e validade curta (ex.: 5 minutos).&lt;br&gt;A URL concede acesso temporário a quem a possui: não registrar em logs. O bucket permanece privado; não há leitura pública.&lt;br&gt;A identidade pode vir do provedor já adotado pela aplicação. A autenticação e a verificação de proprietário são obrigatórias antes de assinar." style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=none;strokeColor=none;spacing=12;align=left;spacing=0;" parent="1" vertex="1">
+                    <mxGeometry x="65" y="355" width="1750" height="85" as="geometry"/>
+                </mxCell>
+                <mxCell id="network" value="REDE PRIVADA E CONTROLES DE ACESSO" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#F4FAF8;strokeColor=#A2C6BA;spacing=12;align=left;verticalAlign=top;fontStyle=1;" parent="1" vertex="1">
+                    <mxGeometry x="35" y="500" width="890" height="350" as="geometry"/>
+                </mxCell>
+                <mxCell id="nettext" value="&lt;b&gt;EC2 → S3 / DynamoDB:&lt;/b&gt; gateway endpoints associados às rotas privadas. Endpoint policy e IAM limitam acesso aos buckets/tabelas da aplicação.&lt;br&gt;&lt;br&gt;&lt;b&gt;EC2 → SQS / Systems Manager:&lt;/b&gt; endpoints de interface nas duas AZs; DNS privado e SG permitindo HTTPS das EC2. Avaliar custo e endpoints exigidos pelo agente/ambiente.&lt;br&gt;&lt;br&gt;&lt;b&gt;EC2 → APIs externas:&lt;/b&gt; NAT da mesma AZ → IGW. Session Manager usa conexões iniciadas pelo agente; sem SSH/RDP aberto.&lt;br&gt;&lt;br&gt;&lt;b&gt;Download pelo usuário:&lt;/b&gt; usa o endpoint público HTTPS do S3 com assinatura. A política do bucket deve permitir esse caminho; uma negação global fora do VPC endpoint bloquearia as URLs pré-assinadas.&lt;br&gt;&lt;br&gt;&lt;b&gt;Origem:&lt;/b&gt; ALB público restrito ao CloudFront por prefix list + cabeçalho; WAF associado à distribuição. Preservar os dados de autenticação no encaminhamento." style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=none;strokeColor=none;spacing=12;align=left;verticalAlign=top;spacing=0;" parent="1" vertex="1">
+                    <mxGeometry x="60" y="550" width="840" height="280" as="geometry"/>
+                </mxCell>
+                <mxCell id="iam" value="PERMISSÕES POR RESPONSABILIDADE" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FCF7FA;strokeColor=#D6B9CA;spacing=12;align=left;verticalAlign=top;fontStyle=1;" parent="1" vertex="1">
+                    <mxGeometry x="955" y="500" width="900" height="350" as="geometry"/>
+                </mxCell>
+                <mxCell id="iamtext" value="&lt;b&gt;Frontend:&lt;/b&gt; SQS SendMessage; DynamoDB GetItem para status/proprietário; S3 GetObjectVersion para assinar o recibo autorizado; leitura apenas dos parâmetros necessários.&lt;br&gt;&lt;br&gt;&lt;b&gt;Backend:&lt;/b&gt; SQS ReceiveMessage / DeleteMessage / ChangeMessageVisibility e atributos; DynamoDB leitura/escrita condicional de tarefas; S3 PutObject e leitura necessária à reconciliação no prefixo de recibos.&lt;br&gt;&lt;br&gt;&lt;b&gt;Operação:&lt;/b&gt; Session Manager autorizado para operadores; logs e auditoria; role separada para configurações de retenção, políticas do bucket e infraestrutura.&lt;br&gt;&lt;br&gt;&lt;b&gt;S3:&lt;/b&gt; exigir HTTPS; bloquear acesso público; restringir retenção inferior ao mínimo e modos incompatíveis. Limitar alteração das políticas e da retenção padrão.&lt;br&gt;&lt;br&gt;Aplicar menor privilégio por ARN/prefixo. A autorização por usuário pertence à API; o role de serviço não substitui essa verificação." style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=none;strokeColor=none;spacing=12;align=left;verticalAlign=top;spacing=0;" parent="1" vertex="1">
+                    <mxGeometry x="980" y="550" width="850" height="280" as="geometry"/>
+                </mxCell>
+                <mxCell id="recover" value="DISPONIBILIDADE E VERIFICAÇÕES DA PROPOSTA" style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=#FFF9EF;strokeColor=#D9C29B;spacing=12;align=left;verticalAlign=top;fontStyle=1;" parent="1" vertex="1">
+                    <mxGeometry x="35" y="885" width="1820" height="170" as="geometry"/>
+                </mxCell>
+                <mxCell id="recoverytext" value="&lt;b&gt;Saúde / capacidade:&lt;/b&gt; health check da aplicação no ALB; saúde ELB no ASG frontend; capacidade para a AZ sobrevivente e teste de perda de AZ.&lt;br&gt;&lt;b&gt;Dados:&lt;/b&gt; DynamoDB PITR + exercício de restauração; S3 Object Lock protege retenção, mas não substitui a estratégia de recuperação do sistema.&lt;br&gt;&lt;b&gt;Testes de falha:&lt;/b&gt; publicação com timeout, mensagem duplicada, worker interrompido após upload, falha no commit, visibilidade expirada e redrive da DLQ.&lt;br&gt;&lt;b&gt;Testes de segurança:&lt;/b&gt; acesso a tarefa de outro usuário, URL expirada, acesso direto ao ALB, upload com retenção inferior e exclusão de versão protegida." style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=none;strokeColor=none;spacing=12;align=left;verticalAlign=top;spacing=0;" parent="1" vertex="1">
+                    <mxGeometry x="60" y="930" width="1770" height="105" as="geometry"/>
+                </mxCell>
+                <mxCell id="sources" value="Referências AWS: Object Lock · Restrict access to Application Load Balancers · Scaling policy based on Amazon SQS.&lt;br&gt;Esta é uma proposta de arquitetura. O arquivo original foi preservado; nenhum recurso AWS ou Terraform foi alterado." style="whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=14;fontColor=#24344B;fillColor=none;strokeColor=none;spacing=12;align=left;fontSize=12;spacing=0;" parent="1" vertex="1">
+                    <mxGeometry x="35" y="1080" width="1810" height="45" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

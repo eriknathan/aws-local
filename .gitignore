@@ -12,4 +12,8 @@ terraform/**/.terraform.tfstate.lock.info
 *.tfstate.*
 terraform/environments/aws/terraform.tfvars
 
+# Arquivos de lock/backup temporários do draw.io
+docs/diagrams/.$*.bkp
+docs/diagrams/.$*.dtmp
+
 .claude

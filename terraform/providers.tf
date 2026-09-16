@@ -2,7 +2,7 @@
 # = true). Para apontar para a AWS real no futuro, basta definir
 # use_local_endpoint = false e ajustar região/credenciais — nenhum módulo
 # precisa mudar (mesmo padrão de migração de LocalStack descrito em
-# docs/floci.md, seção 10).
+# ../docs/floci.md, seção 10).
 provider "aws" {
   region     = var.aws_region
   access_key = var.aws_access_key

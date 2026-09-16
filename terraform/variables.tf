@@ -63,13 +63,13 @@ variable "instance_type" {
 }
 
 variable "frontend_ami_id" {
-  description = "AMI usada nas instâncias de Frontend. AJUSTE conforme o mapeamento de imagens do Floci (ver docs/floci.md, seção 2.3) antes do apply do módulo compute."
+  description = "AMI usada nas instâncias de Frontend. AJUSTE conforme o mapeamento de imagens do Floci (ver ../docs/floci.md, seção 2.3) antes do apply do módulo compute."
   type        = string
   default     = "ami-0000000000000front"
 }
 
 variable "backend_ami_id" {
-  description = "AMI usada nas instâncias de Backend. AJUSTE conforme o mapeamento de imagens do Floci (ver docs/floci.md, seção 2.3) antes do apply do módulo compute."
+  description = "AMI usada nas instâncias de Backend. AJUSTE conforme o mapeamento de imagens do Floci (ver ../docs/floci.md, seção 2.3) antes do apply do módulo compute."
   type        = string
   default     = "ami-0000000000000back"
 }
@@ -121,7 +121,7 @@ variable "enable_cloudfront" {
 }
 
 variable "enable_alb_listener" {
-  description = "Se false, não cria o listener HTTP do ALB — útil enquanto o CreateListener do Floci estiver com bug (ver flowqueue-tf/README.md)."
+  description = "Se false, não cria o listener HTTP do ALB — útil enquanto o CreateListener do Floci estiver com bug (ver terraform/README.md)."
   type        = bool
   default     = true
 }

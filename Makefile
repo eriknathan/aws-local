@@ -24,13 +24,13 @@ reset:
 TF_VARS := -var-file=environments/local/terraform.tfvars
 
 tf-init:
-	terraform -chdir=flowqueue-tf init
+	terraform -chdir=terraform init
 
 tf-plan:
-	terraform -chdir=flowqueue-tf plan $(TF_VARS)
+	terraform -chdir=terraform plan $(TF_VARS)
 
 tf-apply:
-	terraform -chdir=flowqueue-tf apply $(TF_VARS)
+	terraform -chdir=terraform apply $(TF_VARS)
 
 tf-destroy:
-	terraform -chdir=flowqueue-tf destroy $(TF_VARS)
+	terraform -chdir=terraform destroy $(TF_VARS)

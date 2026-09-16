@@ -1,7 +1,7 @@
 # aws-local
 
 Ambiente local para emular a AWS com [Floci](https://floci.io/aws/), usado para
-desenvolver/testar a arquitetura **FlowQueue** (ver `flowqueue-tf/docs/flowqueue.md`)
+desenvolver/testar a arquitetura **FlowQueue** (ver `docs/flowqueue.md`)
 sem precisar de uma conta AWS real.
 
 ## Quick start
@@ -31,7 +31,8 @@ make reset        # parar e apagar todo o estado persistido (data/)
 - `.env.example` — variáveis de ambiente da AWS CLI/SDK e do container Floci.
 - `init/` — scripts opcionais executados na subida do container (criação automática de recursos).
 - `data/` — estado persistido pelo Floci (ignorado no git).
-- `flowqueue-tf/` — código Terraform modular que provisiona a arquitetura FlowQueue (ver `flowqueue-tf/README.md`).
-- `flowqueue-tf/docs/floci.md` — documentação de referência do emulador Floci.
-- `flowqueue-tf/docs/flowqueue.md` — documentação da arquitetura FlowQueue.
-- `flowqueue-tf/docs/flowqueue-arquitetura.drawio` — diagrama da arquitetura.
+- `terraform/` — código Terraform modular que provisiona a arquitetura FlowQueue (ver `terraform/README.md`).
+- `docs/floci.md` — documentação de referência do emulador Floci.
+- `docs/flowqueue.md` — documentação da arquitetura FlowQueue.
+- `docs/melhorias.md` — plano de melhorias pendentes na arquitetura FlowQueue.
+- `docs/diagrams/` — diagramas da arquitetura (`.drawio` + `.png`).

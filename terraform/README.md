@@ -1,6 +1,6 @@
 # Terraform — FlowQueue
 
-Provisiona a arquitetura descrita em `docs/flowqueue.md` de forma modular
+Provisiona a arquitetura descrita em `../docs/flowqueue.md` de forma modular
 (ver `modules/`), apontando por padrão para o **Floci** local.
 
 ## Pré-requisitos
@@ -14,7 +14,7 @@ make up
 ## Uso
 
 ```bash
-cd flowqueue-tf
+cd terraform
 terraform init
 terraform plan  -var-file=environments/local/terraform.tfvars
 terraform apply -var-file=environments/local/terraform.tfvars
@@ -65,7 +65,7 @@ dois problemas abaixo. Um `terraform apply` completo, sem `-target`, sobe as
   (sem Terraform), então não é um problema deste código. Contornado com
   `enable_alb_listener = false`; o target group já existe e o Frontend já
   está anexado a ele, só falta o listener em si.
-- **ASG não sobe containers Docker reais.** `docs/floci.md` descreve EC2 como
+- **ASG não sobe containers Docker reais.** `../docs/floci.md` descreve EC2 como
   rodando em containers Docker reais, mas instâncias criadas via Auto Scaling
   Group aparecem como `InService`/`Healthy` na API (com `InstanceId` válido)
   sem nenhum container correspondente rodando (`docker ps` não mostra nada).

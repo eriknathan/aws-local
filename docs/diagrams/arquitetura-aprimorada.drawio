@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="net-topology" name="01 · Rede e implantação">
-        <mxGraphModel dx="2377" dy="1169" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2000" pageHeight="1490" math="0" shadow="0">
+        <mxGraphModel dx="544" dy="215" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2000" pageHeight="1490" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -142,10 +142,10 @@
                 <mxCell id="albband" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#7952CC;align=left;verticalAlign=top;spacingLeft=10;spacingTop=6;fontColor=#3F4A56;fontSize=12;fontFamily=Arial;dashed=1;dashPattern=6 6;" parent="1" vertex="1">
                     <mxGeometry x="575" y="424" width="125" height="430" as="geometry"/>
                 </mxCell>
-                <mxCell id="leg" value="Leitura do desenho" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#879196;align=left;verticalAlign=top;spacingLeft=10;spacingTop=6;fontColor=#879196;fontSize=12;fontFamily=Arial;dashed=1;dashPattern=6 6;" vertex="1" parent="1">
+                <mxCell id="leg" value="Leitura do desenho" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#879196;align=left;verticalAlign=top;spacingLeft=10;spacingTop=6;fontColor=#879196;fontSize=12;fontFamily=Arial;dashed=1;dashPattern=6 6;" parent="1" vertex="1">
                     <mxGeometry x="165" y="560" width="180" height="340" as="geometry"/>
                 </mxCell>
-                <mxCell id="legt" value="Roxo: rede e borda&lt;br&gt;Rosa: mensageria&lt;br&gt;Azul: DynamoDB&lt;br&gt;Verde: recibos no S3&lt;br&gt;Vermelho: security group&lt;br&gt;Cinza: saída pela Internet&lt;br&gt;&lt;br&gt;Faixa roxa tracejada: um único ALB, presente nas duas AZs.&lt;br&gt;&lt;br&gt;Tracejado: agrupamento lógico ou caminho ainda proposto.&lt;br&gt;&lt;br&gt;&lt;i&gt;Itálico&lt;/i&gt;: ainda não existe no Terraform.&lt;br&gt;&lt;br&gt;Sem setas de negócio aqui: elas estão na aba 02." style="text;html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=10;align=left;verticalAlign=top;fillColor=none;strokeColor=none;fontColor=#3F4A56;" vertex="1" parent="1">
+                <mxCell id="legt" value="Roxo: rede e borda&lt;br&gt;Rosa: mensageria&lt;br&gt;Azul: DynamoDB&lt;br&gt;Verde: recibos no S3&lt;br&gt;Vermelho: security group&lt;br&gt;Cinza: saída pela Internet&lt;br&gt;&lt;br&gt;Faixa roxa tracejada: um único ALB, presente nas duas AZs.&lt;br&gt;&lt;br&gt;Tracejado: agrupamento lógico ou caminho ainda proposto.&lt;br&gt;&lt;br&gt;&lt;i&gt;Itálico&lt;/i&gt;: ainda não existe no Terraform.&lt;br&gt;&lt;br&gt;Sem setas de negócio aqui: elas estão na aba 02." style="text;html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=10;align=left;verticalAlign=top;fillColor=none;strokeColor=none;fontColor=#3F4A56;" parent="1" vertex="1">
                     <mxGeometry x="180" y="592" width="150" height="300" as="geometry"/>
                 </mxCell>
                 <mxCell id="ep" value="VPC Endpoints &lt;i&gt;(propostos)&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#8C4FFF;align=left;verticalAlign=top;spacingLeft=38;spacingTop=6;fontColor=#8C4FFF;fontSize=12;fontFamily=Arial;dashed=1;dashPattern=6 6;" parent="1" vertex="1">
@@ -282,7 +282,7 @@
         </mxGraphModel>
     </diagram>
     <diagram id="processing" name="02 · Processamento confiável">
-        <mxGraphModel dx="3025" dy="1487" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2000" pageHeight="1060" math="0" shadow="0">
+        <mxGraphModel dx="1904" dy="818" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2000" pageHeight="1060" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -416,7 +416,7 @@
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="note-read" value="&lt;b&gt;Como ler:&lt;/b&gt; cada caixa fica na raia do serviço que executa a operação — quem inicia ⑤, ⑥, ⑦ e ⑧ é sempre o worker do backend." style="text;html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=12;align=left;verticalAlign=top;fillColor=none;strokeColor=none;fontColor=#6B7885;" vertex="1" parent="1">
+                <mxCell id="note-read" value="&lt;b&gt;Como ler:&lt;/b&gt; cada caixa fica na raia do serviço que executa a operação — quem inicia ⑤, ⑥, ⑦ e ⑧ é sempre o worker do backend." style="text;html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=12;align=left;verticalAlign=top;fillColor=none;strokeColor=none;fontColor=#6B7885;" parent="1" vertex="1">
                     <mxGeometry x="290" y="745" width="900" height="24" as="geometry"/>
                 </mxCell>
                 <mxCell id="note-idem" value="&lt;b&gt;Reentrega cai em ⑤:&lt;/b&gt; se já existe lease vivo ou estado COMPLETED para o taskId, o worker não repete ⑥ — reconcilia o recibo existente e segue para ⑧." style="text;html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=12;align=left;verticalAlign=top;fillColor=none;strokeColor=none;fontColor=#3F4A56;" parent="1" vertex="1">
@@ -447,7 +447,7 @@
         </mxGraphModel>
     </diagram>
     <diagram id="access-controls" name="03 · Acesso e controles">
-        <mxGraphModel dx="1664" dy="818" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2000" pageHeight="1080" math="0" shadow="0">
+        <mxGraphModel dx="1904" dy="818" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2000" pageHeight="1080" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>

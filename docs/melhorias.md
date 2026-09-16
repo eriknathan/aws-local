@@ -1,7 +1,7 @@
 # Plano de implementação — melhorias na arquitetura FlowQueue
 
 Este documento é **só o plano**, sem código ainda. Cobre as 7 melhorias
-discutidas para a arquitetura FlowQueue (ver `docs/flowqueue.md`), com o que
+discutidas para a arquitetura FlowQueue (ver `flowqueue.md`), com o que
 muda em Terraform, decisões em aberto e uma ordem de prioridade sugerida.
 
 Prioridade sugerida: **1 → 5 → 2+4 → 7 → 6 → 3** (do bug latente mais sério
@@ -33,13 +33,13 @@ após o `visibility_timeout` e é reprocessada — o passo 2 evita reprocessar o
 S3 à toa.
 
 **O que muda em Terraform**:
-- `flowqueue-tf/modules/messaging/variables.tf`: revisar/expor
+- `terraform/modules/messaging/variables.tf`: revisar/expor
   `visibility_timeout_seconds` (hoje fixo em 30s) para garantir que fique
   acima do pior caso de tempo de processamento do Backend + upload do S3.
   Provavelmente sobe pra algo como 60–120s.
 - Nenhum recurso novo — DynamoDB já é schemaless o suficiente para os
   atributos extras (`receipt_key`, `receipt_version_id`, `status`).
-- Documentar o padrão acima como comentário em `modules/compute` (bloco do
+- Documentar o padrão acima como comentário em `terraform/modules/compute` (bloco do
   Backend) e/ou num novo `docs/backend-idempotencia.md`, já que é a lógica
   que qualquer implementação futura do Backend precisa seguir.
 
@@ -53,13 +53,13 @@ aplicação, mas é uma escolha que vale confirmar com você antes de implementa
 
 ## 2. Reforçar a garantia dos 365 dias no S3
 
-**Situação atual**: o IAM do Backend (`main.tf`) já concede só `PutObject`,
+**Situação atual**: o IAM do Backend (`terraform/main.tf`) já concede só `PutObject`,
 `GetObject`, `GetObjectRetention` e `ListBucket` — **sem** `PutObjectRetention`
 nem `s3:BypassGovernanceRetention`. Sem essas permissões, o Backend não
 consegue setar uma retenção mais fraca no upload; todo objeto herda o
 default do bucket (`COMPLIANCE`, 365 dias).
 
-**O que muda em Terraform** (defesa em profundidade, `modules/storage/main.tf`):
+**O que muda em Terraform** (defesa em profundidade, `terraform/modules/storage/main.tf`):
 - Novo `aws_s3_bucket_policy` no bucket de recibos, negando:
   - `s3:PutObjectRetention` e `s3:BypassGovernanceRetention` pra qualquer
     principal (ninguém deveria precisar disso nesse bucket).
@@ -88,12 +88,12 @@ suas antes de qualquer código:
   a AWS de verdade.
 
 **O que muda em Terraform**, assumindo domínio disponível:
-- Novo módulo `modules/certificates` (ou dentro de `modules/edge`):
+- Novo módulo `terraform/modules/certificates` (ou dentro de `terraform/modules/edge`):
   `aws_acm_certificate` + validação DNS (`aws_route53_record` +
   `aws_acm_certificate_validation`) — um para CloudFront (obrigatoriamente
   `us-east-1`, exige um `provider "aws" { alias = "us_east_1" }` extra em
-  `providers.tf` se a região principal for outra) e outro regional pro ALB.
-- `modules/edge`: 
+  `terraform/providers.tf` se a região principal for outra) e outro regional pro ALB.
+- `terraform/modules/edge`: 
   - `aws_lb_listener` HTTPS (443) usando o cert regional; listener HTTP (80)
     vira redirect 301 pra HTTPS.
   - `aws_cloudfront_distribution.viewer_certificate` passa a usar o cert
@@ -107,7 +107,7 @@ suas antes de qualquer código:
   - Novo `aws_lb_listener_rule` no listener HTTPS: se o header secreto não
     bater, retorna 403 fixo (`fixed_response`) — bloqueia quem tentar acessar
     o ALB direto, mesmo sabendo o DNS.
-- Novo `modules/waf`: `aws_wafv2_web_acl` (scope `CLOUDFRONT`, região
+- Novo `terraform/modules/waf`: `aws_wafv2_web_acl` (scope `CLOUDFRONT`, região
   `us-east-1`) com regras gerenciadas da AWS (`AWSManagedRulesCommonRuleSet`,
   `AWSManagedRulesKnownBadInputsRuleSet` pelo menos); associado à distribution
   via `web_acl_id`.
@@ -120,7 +120,7 @@ suas antes de qualquer código:
 plano é só fazer, sem debate de prioridade.**
 
 **O que muda em Terraform**:
-- `modules/network`: dois novos `aws_vpc_endpoint` (`vpc_endpoint_type =
+- `terraform/modules/network`: dois novos `aws_vpc_endpoint` (`vpc_endpoint_type =
   "Gateway"`) para `com.amazonaws.<region>.s3` e
   `com.amazonaws.<region>.dynamodb`, associados às route tables privadas
   (`aws_route_table.private[*]`) já existentes.
@@ -139,20 +139,20 @@ hora + por AZ — aqui sim é avaliação de custo x benefício.**
 
 ## 5. Scaling por demanda real + alarmes CloudWatch
 
-**Maior lacuna funcional hoje**: os ASGs (`modules/compute`) só têm
+**Maior lacuna funcional hoje**: os ASGs (`terraform/modules/compute`) só têm
 `min_size`/`max_size`/`desired_capacity` fixos — não existe nenhuma scaling
 policy. A arquitetura promete "escala independente por camada" mas isso
 ainda não está implementado de fato.
 
 **O que muda em Terraform**:
-- `modules/compute`: variáveis novas opcionais, ex.
+- `terraform/modules/compute`: variáveis novas opcionais, ex.
   `enable_target_tracking_scaling` (bool) + `target_tracking_metric` +
   `target_tracking_value`, criando um `aws_autoscaling_policy` do tipo
   `TargetTrackingScaling` quando habilitado — mantém o módulo genérico
   (reutilizável pelos dois, mas configurado diferente por instância).
 - **Frontend**: target tracking em `ALBRequestCountPerTarget`
   (`predefined_metric_type`, `resource_label` = ARN do target group, que já
-  temos em `module.edge.target_group_arn`) — variável em `main.tf`, algo
+  temos em `module.edge.target_group_arn`) — variável em `terraform/main.tf`, algo
   como 500–1000 req/target.
 - **Backend**: não existe métrica pré-definida de "mensagens SQS por
   instância". Duas opções, a decidir:
@@ -166,8 +166,8 @@ ainda não está implementado de fato.
     montar (precisa de uma métrica derivada, normalmente via CloudWatch Math
     ou uma Lambda publicando a métrica).
   - Recomendo (a) pra começar — mais simples, cobre o caso de uso.
-- Novo `modules/observability` (ou os alarmes dentro de `modules/messaging`
-  e `modules/compute`):
+- Novo `terraform/modules/observability` (ou os alarmes dentro de `terraform/modules/messaging`
+  e `terraform/modules/compute`):
   - Alarme: `ApproximateAgeOfOldestMessage` da fila principal acima de X
     minutos (indica backlog crescendo mais rápido que o processamento).
   - Alarme: qualquer mensagem na DLQ (`ApproximateNumberOfMessagesVisible >
@@ -189,7 +189,7 @@ novo, não mencionado até aqui)?
 
 **O que muda em Terraform** (assumindo que o Frontend passa a servir essa
 API, sem mexer em autenticação por enquanto):
-- `main.tf`, `module "frontend"`: hoje o Frontend só tem permissão de
+- `terraform/main.tf`, `module "frontend"`: hoje o Frontend só tem permissão de
   `sqs:SendMessage`. Precisaria ganhar, de forma bem restrita:
   - `dynamodb:GetItem`/`Query` na tabela de pedidos (só pra checar dono +
     status).
@@ -201,12 +201,14 @@ API, sem mexer em autenticação por enquanto):
 
 ---
 
-## 7. Corrigir o diagrama (`docs/flowqueue-arquitetura.drawio`)
+## 7. Corrigir o diagrama (`diagrams/`)
 
+- Há três arquivos em `diagrams/` (`arquitetura-referencia.drawio`,
+  `arquitetura-completa.drawio`, `arquitetura-aprimorada.drawio`) e ainda não
+  ficou definido qual é o de referência atual — os ajustes abaixo devem ser
+  aplicados nele depois que isso for esclarecido.
 - SQS, DynamoDB e SSM **já estão fora da VPC** desde o redesenho anterior —
-  preciso confirmar com você se o arquivo que está sendo revisado é esse
-  mesmo ou o `docs/arquitetura-referencia.drawio` (apareceu na pasta, não fui
-  eu que criei — não sei se é um rascunho seu ou de outra ferramenta).
+  confirmar se o diagrama de referência já reflete isso.
 - Ajustes pontuais que faltam:
   - Mostrar o ALB explicitamente presente nas duas sub-redes públicas (hoje
     é um ícone único numa faixa de cabeçalho da VPC).
@@ -220,10 +222,10 @@ API, sem mexer em autenticação por enquanto):
 
 | Item | Módulos/arquivos Terraform afetados | Precisa de decisão sua antes? |
 |---|---|---|
-| 1. Idempotência | `modules/messaging` (timeout), docs | Standard vs. FIFO na fila |
-| 2. Retenção S3 | `modules/storage` (bucket policy nova) | Não |
-| 3. WAF/HTTPS/ALB↔CloudFront | `modules/edge`, `modules/certificates` (novo), `modules/waf` (novo), `providers.tf` | Domínio pra ACM |
-| 4. VPC Endpoints | `modules/network` | Só interface endpoints (custo) |
-| 5. Scaling + alarmes | `modules/compute`, `modules/messaging`, `modules/observability` (novo) | Destino dos alarmes (e-mail/SNS) |
-| 6. API + presigned URL | `main.tf` (IAM do Frontend) | Quem serve a API + estratégia de auth |
-| 7. Diagrama | `docs/flowqueue-arquitetura.drawio` | Qual arquivo é o de referência |
+| 1. Idempotência | `terraform/modules/messaging` (timeout), docs | Standard vs. FIFO na fila |
+| 2. Retenção S3 | `terraform/modules/storage` (bucket policy nova) | Não |
+| 3. WAF/HTTPS/ALB↔CloudFront | `terraform/modules/edge`, `terraform/modules/certificates` (novo), `terraform/modules/waf` (novo), `terraform/providers.tf` | Domínio pra ACM |
+| 4. VPC Endpoints | `terraform/modules/network` | Só interface endpoints (custo) |
+| 5. Scaling + alarmes | `terraform/modules/compute`, `terraform/modules/messaging`, `terraform/modules/observability` (novo) | Destino dos alarmes (e-mail/SNS) |
+| 6. API + presigned URL | `terraform/main.tf` (IAM do Frontend) | Quem serve a API + estratégia de auth |
+| 7. Diagrama | `diagrams/` | Qual arquivo é o de referência |

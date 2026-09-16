@@ -61,6 +61,7 @@ make tf-destroy   # terraform destroy -var-file=environments/local/terraform.tfv
 - `docs/floci.md` — documentação de referência do emulador Floci.
 - `docs/flowqueue.md` — documentação da arquitetura FlowQueue (desenho original/base).
 - `docs/arquitetura-completa.md` — a mesma arquitetura com borda protegida, autenticação, VPC Endpoints, escala por demanda real e observabilidade.
+- `docs/terraform.md` — explicação do código Terraform (`terraform/`): estrutura, o que cada módulo provisiona e como main.tf conecta tudo.
 - `docs/melhorias.md` — plano de melhorias pendentes na arquitetura FlowQueue.
 - `docs/diagrams/` — diagramas da arquitetura (`.drawio` + `.png`).
 - `docs/backend-idempotencia.md`, `docs/frontend-auth.md`, `docs/dns-validacao.md` — contratos/passos manuais complementares às melhorias implementadas (ver `docs/melhorias.md`).

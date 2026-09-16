@@ -102,10 +102,11 @@ O nome **FlowQueue** representa bem a característica central da arquitetura: o 
 
 ## 6. Possíveis pontos de atenção / melhorias futuras
 
-- Avaliar o uso de **VPC Endpoints** para SQS, DynamoDB, S3 e SSM, reduzindo a dependência dos NAT Gateways (e custo associado) para tráfego que hoje sai para a internet.
-- Definir **alarmes no CloudWatch** para o tamanho da fila principal e da DLQ, permitindo scaling proativo e alertas de falhas recorrentes.
 - Documentar a **política de retry/redrive** da DLQ (quantas tentativas antes de mover a mensagem).
-- Avaliar **WAF** na frente do CloudFront/ALB para proteção adicional contra ataques comuns na camada web.
+
+Os demais pontos que estavam aqui (VPC Endpoints, alarmes no CloudWatch,
+WAF na borda) já foram endereçados na versão completa da arquitetura — ver
+`arquitetura-completa.md`.
 
 ---
 

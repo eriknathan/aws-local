@@ -104,3 +104,76 @@ resource "aws_route_table_association" "private_backend" {
   subnet_id      = aws_subnet.private_backend[count.index].id
   route_table_id = aws_route_table.private[count.index].id
 }
+
+# --- VPC Endpoints (docs/melhorias.md item 4) ---
+
+# Gateway endpoints (S3 e DynamoDB) — sem custo por hora, associados às
+# route tables privadas já existentes. Sem isso, tráfego de Frontend/Backend
+# pro S3/DynamoDB sai pelo NAT Gateway mesmo sendo tráfego só dentro da AWS.
+resource "aws_vpc_endpoint" "s3" {
+  vpc_id            = aws_vpc.this.id
+  service_name      = "com.amazonaws.${var.aws_region}.s3"
+  vpc_endpoint_type = "Gateway"
+  route_table_ids   = aws_route_table.private[*].id
+
+  tags = merge(var.tags, { Name = "${var.name}-s3-endpoint" })
+}
+
+resource "aws_vpc_endpoint" "dynamodb" {
+  vpc_id            = aws_vpc.this.id
+  service_name      = "com.amazonaws.${var.aws_region}.dynamodb"
+  vpc_endpoint_type = "Gateway"
+  route_table_ids   = aws_route_table.private[*].id
+
+  tags = merge(var.tags, { Name = "${var.name}-dynamodb-endpoint" })
+}
+
+# Security group compartilhado pelos Interface endpoints — libera 443 só a
+# partir da própria VPC.
+resource "aws_security_group" "interface_endpoints" {
+  name_prefix = "${var.name}-vpce-"
+  vpc_id      = aws_vpc.this.id
+
+  ingress {
+    description = "HTTPS a partir da VPC"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [var.vpc_cidr]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = merge(var.tags, { Name = "${var.name}-vpce-sg" })
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+# Interface endpoints (SQS, SSM, SSM Messages, EC2 Messages) — os três
+# últimos juntos são o pré-requisito pro Session Manager funcionar sem NAT
+# Gateway. ENIs ficam nas sub-redes privadas de Backend (uma por AZ); as
+# sub-redes de Frontend alcançam via roteamento local da VPC (mesma VPC,
+# sem passar por NAT/IGW).
+locals {
+  interface_endpoint_services = ["sqs", "ssm", "ssmmessages", "ec2messages"]
+}
+
+resource "aws_vpc_endpoint" "interface" {
+  for_each = toset(local.interface_endpoint_services)
+
+  vpc_id              = aws_vpc.this.id
+  service_name        = "com.amazonaws.${var.aws_region}.${each.value}"
+  vpc_endpoint_type   = "Interface"
+  subnet_ids          = aws_subnet.private_backend[*].id
+  security_group_ids  = [aws_security_group.interface_endpoints.id]
+  private_dns_enabled = true
+
+  tags = merge(var.tags, { Name = "${var.name}-${each.value}-endpoint" })
+}

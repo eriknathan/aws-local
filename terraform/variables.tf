@@ -112,6 +112,12 @@ variable "sqs_max_receive_count" {
   default     = 5
 }
 
+variable "sqs_visibility_timeout_seconds" {
+  description = "Tempo em que uma mensagem fica invisível após ser consumida pelo Backend. Precisa ficar acima do pior caso de tempo de processamento (consulta ao DynamoDB + upload no S3 + gravação condicional), senão a mensagem reaparece e é reprocessada antes da confirmação (ver ../docs/backend-idempotencia.md)."
+  type        = number
+  default     = 90
+}
+
 # --- Borda ---
 
 variable "enable_cloudfront" {
@@ -138,4 +144,26 @@ variable "receipts_retention_mode" {
   description = "Modo do Object Lock dos recibos: COMPLIANCE ou GOVERNANCE"
   type        = string
   default     = "COMPLIANCE"
+}
+
+# --- Scaling e observabilidade ---
+
+variable "frontend_target_tracking_request_count" {
+  description = "Alvo de ALBRequestCountPerTarget pro target tracking do Frontend (requisições por instância por minuto)"
+  type        = number
+  default     = 750
+}
+
+variable "alarm_email" {
+  description = "E-mail a inscrever no tópico SNS de alarmes. null = tópico criado sem inscrição (inscreva depois sem precisar mudar Terraform)."
+  type        = string
+  default     = null
+}
+
+# --- HTTPS / WAF (docs/melhorias.md item 3) ---
+
+variable "domain_name" {
+  description = "Hostname usado pro certificado ACM e pro DNS do FlowQueue (ex.: flowqueue.eriknathan.me). null = item 3 fica desligado (ALB/CloudFront seguem em HTTP puro, único modo testável hoje contra o Floci). O domínio precisa ter validação DNS feita manualmente fora do Terraform — ver ../docs/dns-validacao.md."
+  type        = string
+  default     = null
 }

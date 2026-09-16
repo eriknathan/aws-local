@@ -33,3 +33,23 @@ output "frontend_asg_name" {
 output "backend_asg_name" {
   value = module.backend.asg_name
 }
+
+output "alarms_sns_topic_arn" {
+  value = module.observability.sns_topic_arn
+}
+
+output "cognito_user_pool_id" {
+  value = module.auth.user_pool_id
+}
+
+output "cognito_user_pool_client_id" {
+  value = module.auth.user_pool_client_id
+}
+
+output "acm_dns_validation_records" {
+  description = "Registros DNS a criar manualmente no provedor (Hostinger) pra validar os certificados ACM — vazio se var.domain_name = null. Ver docs/dns-validacao.md."
+  value = local.enable_https ? {
+    regional   = module.certificates[0].regional_validation_records
+    cloudfront = module.certificates[0].cloudfront_validation_records
+  } : null
+}

@@ -43,3 +43,8 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "aws_region" {
+  description = "Região usada para montar o service_name dos VPC endpoints (ex.: com.amazonaws.<região>.s3)"
+  type        = string
+}

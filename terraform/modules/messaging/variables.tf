@@ -6,7 +6,7 @@ variable "name" {
 variable "visibility_timeout_seconds" {
   description = "Tempo em que uma mensagem fica invisível após ser consumida pelo Backend"
   type        = number
-  default     = 30
+  default     = 90
 }
 
 variable "message_retention_seconds" {

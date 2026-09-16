@@ -1,0 +1,23 @@
+# Copie pra environments/aws/terraform.tfvars (já coberto pelo .gitignore
+# da raiz — não commite o arquivo real) e ajuste os valores.
+#
+# Uso: terraform apply -var-file=environments/aws/terraform.tfvars
+
+use_local_endpoint = false
+aws_region         = "us-east-1"
+# access_key/secret_key: prefira variáveis de ambiente
+# (AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY) ou um profile, não tfvars.
+
+frontend_ami_id = "ami-xxxxxxxxxxxxxxxxx"
+backend_ami_id  = "ami-xxxxxxxxxxxxxxxxx"
+
+# Item 3 (docs/melhorias.md) — HTTPS + WAF + restringir ALB ao CloudFront.
+# Domínio na Hostinger: validação DNS é manual, ver ../../../docs/dns-validacao.md
+# antes do primeiro apply com isso configurado.
+domain_name       = "flowqueue.eriknathan.me"
+enable_cloudfront = true
+
+# Os bugs abaixo são específicos do Floci — contra a AWS real não fazem
+# sentido, então tire os dois (voltam ao default = true):
+# enable_alb_listener = true (default)
+# enable_cloudfront já é true acima

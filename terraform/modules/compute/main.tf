@@ -116,3 +116,56 @@ resource "aws_autoscaling_group" "this" {
     }
   }
 }
+
+# Target tracking (ex.: Frontend em ALBRequestCountPerTarget) — genérico,
+# a métrica e o alvo são definidos por quem instancia o módulo
+# (docs/melhorias.md item 5).
+resource "aws_autoscaling_policy" "target_tracking" {
+  count = var.enable_target_tracking_scaling ? 1 : 0
+
+  name                   = "${var.name}-target-tracking"
+  autoscaling_group_name = aws_autoscaling_group.this.name
+  policy_type            = "TargetTrackingScaling"
+
+  target_tracking_configuration {
+    target_value = var.target_tracking_target_value
+
+    predefined_metric_specification {
+      predefined_metric_type = var.target_tracking_predefined_metric_type
+      resource_label          = var.target_tracking_resource_label
+    }
+  }
+}
+
+# Step scaling (ex.: Backend por backlog da fila SQS) — as policies só
+# ajustam a capacidade; o alarme do CloudWatch que as aciona fica em
+# modules/observability, porque depende de métricas de outro módulo (SQS).
+resource "aws_autoscaling_policy" "step_scale_out" {
+  count = var.enable_step_scaling ? 1 : 0
+
+  name                       = "${var.name}-scale-out"
+  autoscaling_group_name    = aws_autoscaling_group.this.name
+  policy_type                = "StepScaling"
+  adjustment_type            = "ChangeInCapacity"
+  estimated_instance_warmup = var.step_scaling_warmup_seconds
+
+  step_adjustment {
+    scaling_adjustment          = var.step_scaling_out_adjustment
+    metric_interval_lower_bound = 0
+  }
+}
+
+resource "aws_autoscaling_policy" "step_scale_in" {
+  count = var.enable_step_scaling ? 1 : 0
+
+  name                       = "${var.name}-scale-in"
+  autoscaling_group_name    = aws_autoscaling_group.this.name
+  policy_type                = "StepScaling"
+  adjustment_type            = "ChangeInCapacity"
+  estimated_instance_warmup = var.step_scaling_warmup_seconds
+
+  step_adjustment {
+    scaling_adjustment          = var.step_scaling_in_adjustment
+    metric_interval_upper_bound = 0
+  }
+}

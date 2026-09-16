@@ -26,6 +26,36 @@ provider "aws" {
       sts         = var.aws_endpoint_url
       cloudfront  = var.aws_endpoint_url
       s3          = var.aws_endpoint_url
+      sns         = var.aws_endpoint_url
+      cloudwatch  = var.aws_endpoint_url
+      cognitoidp  = var.aws_endpoint_url
+      acm         = var.aws_endpoint_url
+      wafv2       = var.aws_endpoint_url
+    }
+  }
+}
+
+# Provider extra, fixo em us-east-1: o certificado ACM usado pelo CloudFront
+# e o Web ACL do WAF (scope = CLOUDFRONT) só podem existir nessa região,
+# não importa a região principal (docs/melhorias.md item 3). Usado só por
+# modules/certificates e modules/waf.
+provider "aws" {
+  alias = "us_east_1"
+
+  region     = "us-east-1"
+  access_key = var.aws_access_key
+  secret_key = var.aws_secret_key
+
+  skip_credentials_validation = var.use_local_endpoint
+  skip_requesting_account_id  = var.use_local_endpoint
+  skip_metadata_api_check     = var.use_local_endpoint
+  s3_use_path_style           = var.use_local_endpoint
+
+  dynamic "endpoints" {
+    for_each = var.use_local_endpoint ? [1] : []
+    content {
+      acm   = var.aws_endpoint_url
+      wafv2 = var.aws_endpoint_url
     }
   }
 }

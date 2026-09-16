@@ -25,3 +25,15 @@ output "asg_name" {
 output "asg_arn" {
   value = aws_autoscaling_group.this.arn
 }
+
+output "target_tracking_policy_arn" {
+  value = try(aws_autoscaling_policy.target_tracking[0].arn, null)
+}
+
+output "step_scale_out_policy_arn" {
+  value = try(aws_autoscaling_policy.step_scale_out[0].arn, null)
+}
+
+output "step_scale_in_policy_arn" {
+  value = try(aws_autoscaling_policy.step_scale_in[0].arn, null)
+}

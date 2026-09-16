@@ -55,3 +55,54 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "receipts" {
     }
   }
 }
+
+# Defesa em profundidade pra retenção mínima: o IAM do Backend já não tem
+# PutObjectRetention/BypassGovernanceRetention (ver módulo compute), mas essa
+# bucket policy nega essas ações pra qualquer principal, mesmo que um papel
+# futuro ganhe essa permissão por engano. Também trava o modo do Object Lock
+# em var.retention_mode — impede downgrade de COMPLIANCE pra GOVERNANCE (ou
+# vice-versa) via header no PutObject.
+#
+# Limitação conhecida: não dá pra expressar "mínimo de var.retention_days
+# dias" como condição estática de bucket policy — a data-alvo é relativa a
+# "agora" e a AWS não tem uma condition key pra isso. O prazo em si depende
+# do default_retention configurado em aws_s3_bucket_object_lock_configuration
+# acima; esta policy só impede enfraquecer o modo/bypassar a retenção.
+#
+# Nota: se var.retention_mode = "GOVERNANCE", negar BypassGovernanceRetention
+# incondicionalmente também bloqueia o uso legítimo desse modo (que existe
+# justamente para permitir bypass com permissão especial). Com o default
+# COMPLIANCE não há esse conflito.
+resource "aws_s3_bucket_policy" "receipts" {
+  bucket = aws_s3_bucket.receipts.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid       = "DenyRetentionBypass"
+        Effect    = "Deny"
+        Principal = "*"
+        Action = [
+          "s3:PutObjectRetention",
+          "s3:BypassGovernanceRetention",
+        ]
+        Resource = "${aws_s3_bucket.receipts.arn}/*"
+      },
+      {
+        Sid       = "DenyObjectLockModeDowngrade"
+        Effect    = "Deny"
+        Principal = "*"
+        Action    = "s3:PutObject"
+        Resource  = "${aws_s3_bucket.receipts.arn}/*"
+        Condition = {
+          StringNotEqualsIfExists = {
+            "s3:object-lock-mode" = var.retention_mode
+          }
+        }
+      },
+    ]
+  })
+
+  depends_on = [aws_s3_bucket_object_lock_configuration.receipts]
+}

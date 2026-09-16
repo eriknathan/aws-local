@@ -77,6 +77,61 @@ dois problemas abaixo. Um `terraform apply` completo, sem `-target`, sobe as
   às vezes não voltam completos no *read* do Floci, gerando um "to change"
   inofensivo (não recria nada). Rodar `apply` de novo resolve; não é um bug
   do nosso código.
+- **Drift permanente (não estabiliza) em `aws_autoscaling_policy` e
+  `aws_cloudwatch_metric_alarm`.** Diferente do drift cosmético do
+  `aws_launch_template` acima (que some depois de um `apply` extra), esses
+  dois ficam em loop infinito — testado com `plan` → `apply` → `plan` de
+  novo e o diff persiste, sempre os mesmos 11 recursos:
+  - `aws_cloudwatch_metric_alarm`: o Floci sempre devolve
+    `datapoints_to_alarm = <evaluation_periods>` no *read*, mesmo esse
+    atributo nunca tendo sido definido no `.tf` (fica `null`, que pro
+    Terraform é um valor válido e diferente de "igual a
+    `evaluation_periods`"). Cosmético — não muda o comportamento do alarme.
+  - `aws_autoscaling_policy` do tipo `TargetTrackingScaling`: o Floci
+    devolve `enabled = false` no *read* (criado como `true`, o default) e
+    **descarta o `resource_label`** dentro de
+    `predefined_metric_specification` — esse aqui é mais sério, porque sem
+    `resource_label` a métrica `ALBRequestCountPerTarget` não teria como
+    saber qual target group medir contra a AWS real. Não reproduzi o mesmo
+    problema nas policies `StepScaling` do Backend (essas não têm
+    `predefined_metric_specification`).
+  Sem impacto prático pra rodar `apply`/`plan` (não recria nada, só marca
+  "to change" toda vez) — mas não dá pra usar `terraform plan` como sinal
+  de "ambiente sem drift" enquanto esses recursos existirem. Vale re-testar
+  em versões futuras do Floci.
+- **ACM: `aws_acm_certificate_validation` valida na hora, sem precisar do
+  CNAME real.** Testado (`module.certificates`, item 3 de
+  `../docs/melhorias.md`): pedi um certificado DNS-validated pro Floci e o
+  `aws_acm_certificate_validation` concluiu em ~0s, sem eu ter criado
+  nenhum registro DNS. Conveniente pra testar local, mas quer dizer que
+  esse módulo **não valida o fluxo real** (que exige criar o CNAME
+  manualmente na Hostinger e esperar a AWS confirmar — ver
+  `../docs/dns-validacao.md`). `aws_wafv2_web_acl` (scope `CLOUDFRONT`)
+  também criou sem erro no Floci.
+- **`aws_cognito_user_pool.endpoint` não bate com o `iss` real do JWT
+  emitido.** Testado na prática: criei um usuário (`AdminCreateUser` +
+  `AdminSetUserPassword`) e fiz login (`AdminInitiateAuth`,
+  `ADMIN_USER_PASSWORD_AUTH`) contra o Floci. O `IdToken` recebido tem
+  `iss = "http://localhost:4566/<user-pool-id>"` (o próprio endpoint do
+  Floci) — mas o atributo `endpoint` que o Terraform lê de volta do
+  `DescribeUserPool` é `cognito-idp.us-east-1.amazonaws.com/<user-pool-id>`
+  (formato de AWS real, sem refletir o `FLOCI_BASE_URL`). Ou seja, o
+  `issuer_url` que `modules/auth` publica no Parameter Store **não bate com
+  o `iss` real dos tokens localmente** — uma validação de JWT que compare
+  `iss` contra esse valor vai falhar contra o Floci mesmo com tudo
+  correto. Contra a AWS real os dois deveriam bater. Documentado também em
+  `../docs/frontend-auth.md`.
+- **Bucket policy: condition key `s3:object-lock-mode` não é avaliada.** A
+  policy de `modules/storage` (item 2 de `../docs/melhorias.md`) nega
+  `PutObject` quando o header `s3:object-lock-mode` vier diferente de
+  `var.retention_mode` — no Floci, essa condição é ignorada e o `PutObject`
+  passa normalmente com o modo que o cliente pedir (testado na prática:
+  um upload com `ObjectLockMode=GOVERNANCE` foi aceito e o objeto ficou
+  protegido em GOVERNANCE, não COMPLIANCE). As outras duas negações da
+  mesma policy (`s3:PutObjectRetention` e `s3:BypassGovernanceRetention`)
+  funcionam corretamente — só essa condition key específica não é
+  respeitada. Vale re-testar em versões futuras do Floci; contra a AWS
+  real a policy deve funcionar como desenhada.
 
 Fora esses pontos, rede (VPC/subnets/NAT/IGW), SQS, DynamoDB, Parameter
 Store, S3 (bucket + Object Lock + versionamento + encryption), o ALB em si

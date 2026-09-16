@@ -4,6 +4,10 @@
 
 Documentação de referência sobre a arquitetura **FlowQueue**: um desenho de referência para sistemas web multi-camada, altamente disponíveis, rodando dentro de uma VPC AWS e desacoplados por filas.
 
+> Este documento descreve o desenho **original/base**. Para a versão com
+> borda protegida (WAF/HTTPS), autenticação, VPC Endpoints, escala por
+> demanda real e observabilidade, ver `arquitetura-completa.md`.
+
 ---
 
 ## 1. Visão geral

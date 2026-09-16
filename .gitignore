@@ -1,19 +1,37 @@
 # Credenciais/config local (copiado de .env.example)
 .env
+.env.*
+!.env.example
 
 # Estado persistido do Floci (S3, DynamoDB, etc.)
 data/*
 !data/.gitkeep
 
 # Terraform
-terraform/**/.terraform/
-terraform/**/.terraform.tfstate.lock.info
+**/.terraform/
 *.tfstate
 *.tfstate.*
+*.tfplan
+*.tfplan.*
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
 terraform/environments/aws/terraform.tfvars
 
 # Arquivos de lock/backup temporários do draw.io
 docs/diagrams/.$*.bkp
 docs/diagrams/.$*.dtmp
 
-.claude
+# SO / editores
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+.claude/

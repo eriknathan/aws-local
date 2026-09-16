@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="net-topology" name="01 · Rede e implantação">
-        <mxGraphModel dx="544" dy="215" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2000" pageHeight="1490" math="0" shadow="0">
+        <mxGraphModel dx="1931" dy="818" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2000" pageHeight="1490" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -282,7 +282,7 @@
         </mxGraphModel>
     </diagram>
     <diagram id="processing" name="02 · Processamento confiável">
-        <mxGraphModel dx="1904" dy="818" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2000" pageHeight="1060" math="0" shadow="0">
+        <mxGraphModel dx="1931" dy="818" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2000" pageHeight="1060" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>

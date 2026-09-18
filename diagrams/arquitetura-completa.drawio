@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="complete-reference" name="Arquitetura completa">
-        <mxGraphModel dx="1679" dy="711" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2260" pageHeight="1760" math="0" shadow="0">
+        <mxGraphModel dx="1931" dy="818" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2260" pageHeight="1760" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -53,7 +53,7 @@
                     <mxGeometry x="391" y="151" width="30" height="30" as="geometry"/>
                 </mxCell>
                 <mxCell id="vpc" value="VPC · 10.0.0.0/16" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#4F9637;align=left;verticalAlign=top;spacingLeft=38;spacingTop=6;fontColor=#4F9637;fontSize=13;fontFamily=Arial;" parent="1" vertex="1">
-                    <mxGeometry x="415" y="200" width="940" height="845" as="geometry"/>
+                    <mxGeometry x="415" y="200" width="940" height="840" as="geometry"/>
                 </mxCell>
                 <mxCell id="vpcicon" value="" style="sketch=0;html=1;outlineConnect=0;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.vpc;fillColor=#4F9637;gradientColor=none;strokeColor=none;aspect=fixed;" parent="1" vertex="1">
                     <mxGeometry x="416" y="201" width="30" height="30" as="geometry"/>
@@ -202,13 +202,13 @@
                 <mxCell id="dluser-note" value="&lt;b&gt;Download do recibo&lt;/b&gt;&lt;br&gt;Cliente autentica no Cognito (login) e envia o JWT ao Frontend.&lt;br&gt;Frontend valida o JWT (JWKS), consulta dono/estado no DynamoDB e assina uma URL GET curta (≈5 min).&lt;br&gt;Bucket segue privado: download direto do S3 pela URL assinada, sem VPC endpoint no caminho." style="text;html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=11;align=left;verticalAlign=top;fillColor=none;strokeColor=none;fontColor=#3F4A56;" parent="1" vertex="1">
                     <mxGeometry x="1595" y="772" width="455" height="90" as="geometry"/>
                 </mxCell>
-                <mxCell id="cognito" value="" style="sketch=0;html=1;outlineConnect=0;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.cognito;fillColor=#DD344C;gradientColor=none;strokeColor=none;aspect=fixed;" vertex="1" parent="1">
+                <mxCell id="cognito" value="" style="sketch=0;html=1;outlineConnect=0;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.cognito;fillColor=#DD344C;gradientColor=none;strokeColor=none;aspect=fixed;" parent="1" vertex="1">
                     <mxGeometry x="1510" y="926" width="50" height="50" as="geometry"/>
                 </mxCell>
-                <mxCell id="cognito-label" value="&lt;b&gt;Cognito · User Pool&lt;/b&gt;&lt;br&gt;Login por e-mail (InitiateAuth) · app client sem secret&lt;br&gt;Frontend valida o JWT localmente via JWKS — sem chamada de API por request, sem IAM extra pro Cognito." style="text;html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=11;align=left;verticalAlign=top;fillColor=none;strokeColor=none;fontColor=#3F4A56;" vertex="1" parent="1">
+                <mxCell id="cognito-label" value="&lt;b&gt;Cognito · User Pool&lt;/b&gt;&lt;br&gt;Login por e-mail (InitiateAuth) · app client sem secret&lt;br&gt;Frontend valida o JWT localmente via JWKS — sem chamada de API por request, sem IAM extra pro Cognito." style="text;html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=11;align=left;verticalAlign=top;fillColor=none;strokeColor=none;fontColor=#3F4A56;" parent="1" vertex="1">
                     <mxGeometry x="1595" y="922" width="545" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="e-dluser-cognito" value="login (JWT)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;jumpStyle=arc;jumpSize=8;fontFamily=Arial;fontSize=11;strokeWidth=1.4;endArrow=blockThin;endSize=6;labelBackgroundColor=#FFFFFF;strokeColor=#DD344C;fontColor=#DD344C;dashed=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="dluser" target="cognito">
+                <mxCell id="e-dluser-cognito" value="login (JWT)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;jumpStyle=arc;jumpSize=8;fontFamily=Arial;fontSize=11;strokeWidth=1.4;endArrow=blockThin;endSize=6;labelBackgroundColor=#FFFFFF;strokeColor=#DD344C;fontColor=#DD344C;dashed=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" source="dluser" target="cognito" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="ops" value="Operação e observabilidade · serviços regionais alcançados pelos endpoints" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#879196;align=left;verticalAlign=top;spacingLeft=10;spacingTop=6;fontColor=#879196;fontSize=12;fontFamily=Arial;dashed=1;dashPattern=6 6;" parent="1" vertex="1">
